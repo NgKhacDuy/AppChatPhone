@@ -9,6 +9,6 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget body(BuildContext context) {
-    return const Text('hi');
+    return const Text('hiasdasdasdsadads');
   }
 }
