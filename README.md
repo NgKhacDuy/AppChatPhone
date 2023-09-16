@@ -1,16 +1,22 @@
-# app_chat
+# Guideline source code
 
-A new Flutter project.
+**Techstack**
 
-## Getting Started
+- Get X
+- Firebase auth
+- Firebase core
 
-This project is a starting point for a Flutter application.
+**How to run source**
 
-A few resources to get you started if this is your first Flutter project:
+- Run: press Ctrl + F5
+- Debug: press F5
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**Add image to source**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- put img to resource/assets/pngs
+- run terminal, run melos build-resources
+
+**Important**
+
+- Do not hard code, eg: ~~Height: 321~~ -> Height: MediaQuery.of(context), etc.
+- Do not push directly to main branch, must create branch and create pull request
