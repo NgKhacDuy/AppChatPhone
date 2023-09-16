@@ -18,13 +18,12 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: AppThemeData.lightTheme,
       darkTheme: AppThemeData.darkTheme,
-      initialRoute: Routes.home,
+      initialRoute: Routes.login,
       getPages: AppPages.routes,
       smartManagement: SmartManagement.full,
       builder: AppLoadingOverlayWidget.init(),
