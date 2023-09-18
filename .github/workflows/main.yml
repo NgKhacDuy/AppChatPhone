@@ -38,12 +38,11 @@ jobs:
         with:
           name: release-apk
           path: build/app/outputs/apk/release/app-release.apk
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Test
+      - name: Get GitHub Tag Message
+        id: github_tag_message
         run: |
-          echo $RELEASE_VERSION
-          echo ${{ env.RELEASE_VERSION }}
+          tag_message=$(git tag -l --format='%(contents)' ${{ github.ref }})
+          echo "::set-output name=tag_message::$tag_message"
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
@@ -51,6 +50,6 @@ jobs:
             token: ${{secrets.TOKEN}}
             groups: pre-tester
             file: build/app/outputs/apk/release/app-release.apk
-            releaseNotes: "Release for ${{ github.ref }}"
+            releaseNotes: "${{ steps.github_tag_message.outputs.tag_message }}"
             releaseNotesFile: ''
             appRelease: ${{ github.ref }}
