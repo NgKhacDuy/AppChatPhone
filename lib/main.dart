@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
       getPages: AppPages.routes,
       smartManagement: SmartManagement.full,
       builder: AppLoadingOverlayWidget.init(),
+      initialBinding: AppBinding(),
     );
   }
 }
