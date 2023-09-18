@@ -2,8 +2,8 @@ name: App Chat
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*'
 
 jobs:
   build:
