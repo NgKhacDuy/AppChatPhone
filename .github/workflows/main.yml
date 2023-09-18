@@ -29,6 +29,8 @@ jobs:
         with:
           channel: "stable"
       - run: dart pub global activate melos
+      - run: melos bootstrap
+      - run: melos gen-strings
       - run: flutter pub get
       - run: melos build-resources
       - run: flutter build apk
