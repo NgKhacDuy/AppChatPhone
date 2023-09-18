@@ -17,7 +17,7 @@ class LoginPage extends GetView<LoginController> {
             Container(
               padding: EdgeInsets.only(
                   left: AppThemeExt.of.majorPaddingScale(20 / 4),
-                  top: AppThemeExt.of.majorPaddingScale(90 / 4)),
+                  top: MediaQuery.of(context).size.height / 9),
               child: const Text(
                 'Welcome\nBack',
                 style: TextStyle(color: Colors.white, fontSize: 33),
@@ -37,7 +37,8 @@ class LoginPage extends GetView<LoginController> {
                         child: Column(
                           children: [
                             TextField(
-                              style: TextStyle(color: Colors.black),
+                              controller: controller.emailController,
+                              style: const TextStyle(color: Colors.black),
                               decoration: InputDecoration(
                                   fillColor: Colors.grey.shade100,
                                   filled: true,
@@ -50,8 +51,8 @@ class LoginPage extends GetView<LoginController> {
                               height: AppThemeExt.of.majorMarginScale(5),
                             ),
                             TextField(
-                              // controller: password,
-                              style: TextStyle(),
+                              controller: controller.passwordController,
+                              style: const TextStyle(),
                               obscureText: true,
                               decoration: InputDecoration(
                                   fillColor: Colors.grey.shade100,
@@ -61,6 +62,7 @@ class LoginPage extends GetView<LoginController> {
                                     borderRadius: BorderRadius.circular(10),
                                   )),
                             ),
+                            Obx(() => controller.showError()),
                             SizedBox(
                               height: AppThemeExt.of.majorMarginScale(3),
                             ),
@@ -81,7 +83,11 @@ class LoginPage extends GetView<LoginController> {
                                   backgroundColor: const Color(0xff4c505b),
                                   child: IconButton(
                                       color: Colors.white,
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
+                                        controller.login();
+                                      },
                                       icon: const Icon(
                                         Icons.arrow_forward,
                                       )),
@@ -92,7 +98,9 @@ class LoginPage extends GetView<LoginController> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.toNamed(Routes.register);
+                                  },
                                   child: const Text(
                                     'Sign Up',
                                     textAlign: TextAlign.left,
