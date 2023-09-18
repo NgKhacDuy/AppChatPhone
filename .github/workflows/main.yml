@@ -28,6 +28,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
+      - run: dart pub global activate melos
       - run: flutter pub get
       - run: melos build-resources
       - run: flutter build apk
