@@ -20,18 +20,6 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   RxString loginError = RxString('');
 
-  @override
-  void onReady() {
-    checkLogin();
-    super.onReady();
-  }
-
-  void checkLogin() {
-    if (FirebaseAuth.instance.currentUser == null) {
-      Get.toNamed(Routes.login);
-    }
-  }
-
   void login() async {
     final authService = Get.find<AuthService>();
     if (emailController.text.isNotEmpty || passwordController.text.isNotEmpty) {
@@ -86,5 +74,15 @@ class LoginController extends GetxController {
   bool isEmail(String input) {
     final emailRegExp = RegExp(r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
     return emailRegExp.hasMatch(input);
+  }
+
+  void loginWithGoogle() async {
+    final authService = Get.find<AuthService>();
+    try {
+      UserCredential? userCredential = await authService.signInWithGoogle();
+    } on FirebaseAuthException catch (e) {
+      Logs.e(e);
+      Logs.e(e.code);
+    }
   }
 }

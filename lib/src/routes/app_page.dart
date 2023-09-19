@@ -4,6 +4,8 @@ import 'package:app_chat/src/pages/register/register_controller.dart';
 import 'package:app_chat/src/services/auth/auth_service.dart';
 import 'package:get/get.dart';
 
+import '../ext/app_controller.dart';
+
 part 'app_binding.dart';
 part 'app_routes.dart';
 
@@ -11,7 +13,10 @@ class AppPages {
   AppPages._();
 
   static final routes = [
-    GetPage(name: Routes.home, page: () => const HomePage()),
+    GetPage(
+        name: Routes.home,
+        page: () => const HomePage(),
+        binding: HomeBinding()),
     GetPage(
         name: Routes.login,
         page: () => const LoginPage(),

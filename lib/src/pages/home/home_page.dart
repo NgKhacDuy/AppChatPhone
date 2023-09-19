@@ -11,7 +11,12 @@ class HomePage extends GetView<HomeController> {
   Widget body(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: const Text('this is home'),
+      child: TextButton(
+        onPressed: () {
+          controller.logout();
+        },
+        child: Text('log out'),
+      ),
     );
   }
 }
