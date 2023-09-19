@@ -38,18 +38,17 @@ jobs:
         with:
           name: release-apk
           path: build/app/outputs/apk/release/app-release.apk
-      - name: Get GitHub Tag Message
-        id: github_tag_message
-        run: |
-          tag_message=$(git tag -l --format='%(contents)' ${{ github.ref }})
-          echo "::set-output name=tag_message::$tag_message"
+      - name: Extract Version from Tag
+        id: extract_version
+        run: echo "::set-output name=version::$(echo ${{ github.ref }} | sed -n 's/refs\/tags\/v//p')"
+
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-            appId: ${{secrets.APPID}}
-            token: ${{secrets.TOKEN}}
-            groups: pre-tester
-            file: build/app/outputs/apk/release/app-release.apk
-            releaseNotes: "${{ steps.github_tag_message.outputs.tag_message }}"
-            releaseNotesFile: ''
-            appRelease: ${{ github.ref }}
+          appId: ${{ secrets.APPID }}
+          token: ${{ secrets.TOKEN }}
+          groups: pre-tester
+          file: build/app/outputs/apk/release/app-release.apk
+          releaseNotes: "Release for ${{ github.ref }}"
+          releaseNotesFile: ''
+          appRelease: ${{ steps.extract_version.outputs.version }}
