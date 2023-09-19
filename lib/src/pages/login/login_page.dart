@@ -128,7 +128,9 @@ class LoginPage extends GetView<LoginController> {
                             SignInButton(
                               Buttons.google,
                               text: "Sign in with Google",
-                              onPressed: () {},
+                              onPressed: () {
+                                controller.loginWithGoogle();
+                              },
                             )
                           ],
                         ),
