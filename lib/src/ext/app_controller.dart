@@ -15,7 +15,7 @@ class AppController extends GetxController {
   void checkLogin() {
     _firebaseAuth.authStateChanges().listen((User? user) {
       if (user != null) {
-        Get.toNamed(Routes.home);
+        Get.offAllNamed(Routes.home);
       }
     });
   }

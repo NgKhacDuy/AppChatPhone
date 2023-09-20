@@ -54,6 +54,12 @@ class AuthService extends GetxController {
         accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
     UserCredential userCredential =
         await _firebaseAuth.signInWithCredential(credential);
+
+    _firestore.collection('users').doc(userCredential.user!.uid).set({
+      'uid': userCredential.user!.uid,
+      'email': userCredential.user!.email,
+      'name': userCredential.user!.displayName
+    });
     return userCredential;
   }
 }
