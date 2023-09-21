@@ -37,35 +37,103 @@ class SearchPage extends GetView<SearchUserController> {
               focusedErrorBorder: border,
             ),
           ),
+          SingleChildScrollView(
+            child: Obx(() => ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      padding:
+                          EdgeInsets.all(AppThemeExt.of.majorMarginScale(2)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: controller.selectIndex.value == index
+                              ? AppColors.of.greenColor[4]
+                              : AppColors.of.grayColor[5]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(controller.listUser[index].data['name']),
+                          controller.listUser[index]
+                                      .data['haveFriendRequest'] ==
+                                  false
+                              ? IconButton(
+                                  onPressed: () async {
+                                    await controller.addFriendRequest(controller
+                                        .listUser[index].data['objectID']);
+                                    controller.selectIndex.value = index;
+                                  },
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.userPlus,
+                                    size: 16,
+                                    color: AppColors.of.grayColor[10],
+                                  ))
+                              : IconButton(
+                                  onPressed: () {},
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.userXmark,
+                                    size: 16,
+                                    color: AppColors.of.grayColor[10],
+                                  ))
+                        ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(height: AppThemeExt.of.majorMarginScale(4));
+                  },
+                  itemCount: controller.listUser.value.length ?? 0,
+                )),
+          ),
+          SizedBox(height: AppThemeExt.of.majorMarginScale(4)),
+          const Text(
+            'Danh sách lời mời kết bạn',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: AppThemeExt.of.majorMarginScale(2)),
           Obx(() => ListView.separated(
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-                    padding: EdgeInsets.all(AppThemeExt.of.majorMarginScale(4)),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: AppColors.of.grayColor[5]),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(controller.listUser[index].data['name']),
-                        FaIcon(
-                          FontAwesomeIcons.userPlus,
-                          size: 16,
-                          color: AppColors.of.grayColor[10],
-                        )
-                      ],
-                    ),
-                  );
+                      padding:
+                          EdgeInsets.all(AppThemeExt.of.majorMarginScale(6)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppColors.of.tealColor[3]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(controller.listRequest[index].name),
+                          Row(
+                            children: [
+                              InkWell(
+                                child: FaIcon(
+                                  FontAwesomeIcons.solidSquareCheck,
+                                  size: 30,
+                                  color: AppColors.of.greenColor,
+                                ),
+                              ),
+                              SizedBox(
+                                  width: AppThemeExt.of.majorMarginScale(4)),
+                              InkWell(
+                                child: FaIcon(
+                                  FontAwesomeIcons.solidRectangleXmark,
+                                  size: 30,
+                                  color: AppColors.of.redColor,
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ));
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return const Divider();
+                  return SizedBox(height: AppThemeExt.of.majorMarginScale(4));
                 },
-                itemCount: controller.listUser.value.length ?? 0,
+                itemCount: controller.listRequest.length,
               )),
           TextButton(
-              onPressed: () {
-                controller.logout();
+              onPressed: () async {
+                await controller.getListRequest();
               },
               child: Text('log out'))
         ],

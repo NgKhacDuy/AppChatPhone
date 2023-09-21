@@ -7,9 +7,8 @@ class UserModel {
   final String uid;
 
   UserModel({required this.name, required this.email, required this.uid});
-  factory UserModel.fromSnapshot(DocumentSnapshot snapshot) {
-    final data = snapshot.data() as Map<String, dynamic>;
+  factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-        name: data['name'], email: data['email'], uid: data['uid']);
+        name: json['name'], email: json['email'], uid: json['uid']);
   }
 }
