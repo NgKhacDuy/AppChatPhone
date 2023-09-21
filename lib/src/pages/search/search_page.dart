@@ -11,7 +11,7 @@ class SearchPage extends GetView<SearchUserController> {
     return Container(
       padding: EdgeInsets.fromLTRB(
           AppThemeExt.of.majorMarginScale(6),
-          AppThemeExt.of.majorMarginScale(8),
+          AppThemeExt.of.majorMarginScale(10),
           AppThemeExt.of.majorMarginScale(6),
           AppThemeExt.of.majorMarginScale(6)),
       alignment: Alignment.center,
@@ -37,6 +37,37 @@ class SearchPage extends GetView<SearchUserController> {
               focusedErrorBorder: border,
             ),
           ),
+          Obx(() => ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    padding: EdgeInsets.all(AppThemeExt.of.majorMarginScale(4)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: AppColors.of.grayColor[5]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(controller.listUser[index].data['name']),
+                        FaIcon(
+                          FontAwesomeIcons.userPlus,
+                          size: 16,
+                          color: AppColors.of.grayColor[10],
+                        )
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Divider();
+                },
+                itemCount: controller.listUser.value.length ?? 0,
+              )),
+          TextButton(
+              onPressed: () {
+                controller.logout();
+              },
+              child: Text('log out'))
         ],
       ),
     );
