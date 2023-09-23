@@ -120,9 +120,9 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 
-#flutter_native_splash:
-#  android: true
-#  ios: true
-#  web: false
-#  color: "#FFFFFF"
-#  image: "resources/assets/pngs/splash_screen.png"
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  color: "#2D2D34"
+  image: "resources/assets/pngs/splash_screen1.png"
