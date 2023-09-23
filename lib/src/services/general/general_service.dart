@@ -122,4 +122,33 @@ class GeneralService extends GetxController {
       rethrow;
     }
   }
+
+  Future<void> rejectFriendRequest(String senderId, String receiverId) async {
+    try {
+      WriteBatch batch = _firestore.batch();
+      final listRequest = await _firestore
+          .collection('friendRequests')
+          .where('receiverId', isEqualTo: receiverId)
+          .where('senderId', isEqualTo: senderId)
+          .get();
+      for (QueryDocumentSnapshot doc in listRequest.docs) {
+        batch.delete(doc.reference);
+      }
+
+      final listRequest2 = await _firestore
+          .collection('friendRequests')
+          .where('receiverId', isEqualTo: senderId)
+          .where('senderId', isEqualTo: receiverId)
+          .get();
+
+      for (QueryDocumentSnapshot doc in listRequest2.docs) {
+        batch.delete(doc.reference);
+      }
+
+      await batch.commit();
+    } on FirebaseException catch (e) {
+      Logs.e(e);
+      rethrow;
+    }
+  }
 }

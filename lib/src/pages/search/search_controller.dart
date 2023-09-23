@@ -54,6 +54,12 @@ class SearchUserController extends GetxController {
     await getListRequest();
   }
 
+  Future<void> rejectFriendRequest(String senderId) async {
+    final User? user = _firebaseAuth.currentUser;
+    await generalService.rejectFriendRequest(senderId, user!.uid);
+    await getListRequest();
+  }
+
   @override
   void onReady() async {
     await getListRequest();

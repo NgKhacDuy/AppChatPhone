@@ -131,6 +131,10 @@ class SearchPage extends GetView<SearchUserController> {
                                       size: 30,
                                       color: AppColors.of.redColor,
                                     ),
+                                    onTap: () async {
+                                      await controller.rejectFriendRequest(
+                                          controller.listRequest[index].uid);
+                                    },
                                   )
                                 ],
                               )
