@@ -5,5 +5,6 @@ class AppBinding extends Bindings {
   void dependencies() {
     Get.put<AppController>(AppController(), permanent: true);
     Get.put<AuthService>(AuthService(), permanent: true);
+    Get.put<GeneralService>(GeneralService(), permanent: true);
   }
 }

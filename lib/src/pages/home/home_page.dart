@@ -9,14 +9,31 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget body(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: TextButton(
-        onPressed: () {
-          controller.logout();
-        },
-        child: Text('log out'),
-      ),
-    );
+    return Obx(() => Scaffold(
+          body: controller.listScreen[controller.indexWidget.value],
+          bottomNavigationBar: const GNav(
+              backgroundColor: Colors.black,
+              color: Colors.white,
+              activeColor: Colors.white,
+              gap: 4,
+              tabs: [
+                GButton(
+                  icon: Icons.home,
+                  text: 'Home',
+                ),
+                GButton(
+                  icon: Icons.people,
+                  text: 'Friends',
+                ),
+                GButton(
+                  icon: Icons.search,
+                  text: 'Search',
+                ),
+                GButton(
+                  icon: Icons.settings,
+                  text: 'Setting',
+                )
+              ]),
+        ));
   }
 }
