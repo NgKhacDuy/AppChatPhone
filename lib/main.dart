@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLoadingOverlayWidget.configure(context);
     return GetMaterialApp(
       theme: AppThemeData.lightTheme,
       darkTheme: AppThemeData.darkTheme,
