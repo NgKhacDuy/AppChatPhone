@@ -1,4 +1,5 @@
 import 'package:app_chat/src/components/main/page/app_main_page_base_builder.dart';
+import 'package:app_chat/src/pages/friends/friend_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -19,7 +20,7 @@ class HomeController extends GetxController {
   final authService = Get.find<AuthService>();
 
   RxInt indexWidget = RxInt(0);
-  List<Widget> listScreen = [const SearchPage()];
+  List<Widget> listScreen = [const FriendPage()];
 
   void logout() async {
     await authService.signOutAll();
