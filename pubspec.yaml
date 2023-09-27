@@ -67,6 +67,8 @@ dependencies:
   google_nav_bar: ^5.0.6
   algolia: ^1.1.2
   font_awesome_flutter: ^10.5.0
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -120,9 +122,9 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 
-#flutter_native_splash:
-#  android: true
-#  ios: true
-#  web: false
-#  color: "#FFFFFF"
-#  image: "resources/assets/pngs/splash_screen.png"
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  color: "#2D2D34"
+  image: "resources/assets/pngs/splash_screen1.png"

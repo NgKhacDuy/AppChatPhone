@@ -26,10 +26,6 @@ class HomePage extends GetView<HomeController> {
                   text: 'Friends',
                 ),
                 GButton(
-                  icon: Icons.search,
-                  text: 'Search',
-                ),
-                GButton(
                   icon: Icons.settings,
                   text: 'Setting',
                 )

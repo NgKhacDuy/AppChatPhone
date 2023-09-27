@@ -11,8 +11,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Fsplash.preserve(widgetsBinding: WidgetsBinding.instance);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  Fsplash.remove();
   runApp(const MyApp());
+  Fsplash.remove();
 }
 
 class MyApp extends StatelessWidget {
