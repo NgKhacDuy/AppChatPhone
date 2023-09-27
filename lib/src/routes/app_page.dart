@@ -1,7 +1,7 @@
+import 'package:app_chat/src/pages/friends/components/friend_scan_qr.dart';
 import 'package:app_chat/src/pages/home/home_controller.dart';
 import 'package:app_chat/src/pages/login/login_controller.dart';
 import 'package:app_chat/src/pages/register/register_controller.dart';
-import 'package:app_chat/src/pages/search/search_controller.dart';
 import 'package:app_chat/src/services/auth/auth_service.dart';
 import 'package:get/get.dart';
 
@@ -27,9 +27,6 @@ class AppPages {
         name: Routes.register,
         page: () => const RegisterPage(),
         binding: RegisterBinding()),
-    GetPage(
-        name: Routes.search,
-        page: () => const SearchPage(),
-        binding: SearchBinding()),
+    GetPage(name: Routes.friendScanQr, page: () => const FriendScanQr())
   ];
 }

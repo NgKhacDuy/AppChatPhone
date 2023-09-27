@@ -171,4 +171,26 @@ class GeneralService extends GetxController {
     // Wait for all of the futures to complete.
     return await Future.wait(friendFutures);
   }
+
+  Future<UserModel> getUserById(String uid) async {
+    try {
+      final snapShot = await _firestore.collection('users').doc(uid).get();
+      return UserModel.fromJson(snapShot.data() ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> checkUserInListFriend(String userId) async {
+    final snapShot = await _firestore
+        .collection('users')
+        .doc(_firebaseAuth.currentUser?.uid)
+        .get();
+    List<dynamic> friends = snapShot.get('friends');
+
+    if (friends.isEmpty) {
+      return false;
+    }
+    return friends.contains(userId);
+  }
 }

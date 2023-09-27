@@ -10,7 +10,6 @@ import 'package:utilities/utilities.dart';
 
 import '../../routes/app_page.dart';
 import '../../services/auth/auth_service.dart';
-import '../search/search_controller.dart';
 
 part 'home_page.dart';
 part 'home_binding.dart';

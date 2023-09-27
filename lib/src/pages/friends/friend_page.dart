@@ -23,7 +23,12 @@ class FriendPage extends GetView<FriendController> {
               ),
               const Spacer(),
               GestureDetector(
-                  onTap: () {}, child: const FaIcon(FontAwesomeIcons.userPlus)),
+                  onTap: () {
+                    Get.toNamed(Routes.friendScanQr)?.then((value) async {
+                      await controller.checkUserInList(value);
+                    });
+                  },
+                  child: const FaIcon(FontAwesomeIcons.userPlus)),
               SizedBox(width: AppThemeExt.of.majorPaddingScale(6)),
               GestureDetector(
                   onTap: () {
@@ -92,6 +97,61 @@ class FriendPage extends GetView<FriendController> {
                     return const SizedBox();
                   },
                 ),
+              )),
+          SizedBox(height: AppThemeExt.of.majorMarginScale(4)),
+          const Text(
+            'Danh sách lời mời kết bạn',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: AppThemeExt.of.majorMarginScale(2)),
+          Obx(() => ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                      padding:
+                          EdgeInsets.all(AppThemeExt.of.majorMarginScale(6)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppColors.of.tealColor[3]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(controller.listRequest[index].name),
+                          Row(
+                            children: [
+                              InkWell(
+                                child: FaIcon(
+                                  FontAwesomeIcons.solidSquareCheck,
+                                  size: 30,
+                                  color: AppColors.of.greenColor,
+                                ),
+                                onTap: () async {
+                                  await controller.acceptFriendRequest(
+                                      controller.listRequest[index].uid);
+                                },
+                              ),
+                              SizedBox(
+                                  width: AppThemeExt.of.majorMarginScale(4)),
+                              InkWell(
+                                child: FaIcon(
+                                  FontAwesomeIcons.solidRectangleXmark,
+                                  size: 30,
+                                  color: AppColors.of.redColor,
+                                ),
+                                onTap: () async {
+                                  await controller.rejectFriendRequest(
+                                      controller.listRequest[index].uid);
+                                },
+                              )
+                            ],
+                          )
+                        ],
+                      ));
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: AppThemeExt.of.majorMarginScale(4));
+                },
+                itemCount: controller.listRequest.length,
               )),
         ],
       ),
