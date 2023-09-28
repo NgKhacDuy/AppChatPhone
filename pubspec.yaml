@@ -69,6 +69,7 @@ dependencies:
   font_awesome_flutter: ^10.5.0
   qr_flutter: ^4.1.0
   mobile_scanner: ^3.4.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -128,3 +129,8 @@ flutter_native_splash:
   web: false
   color: "#2D2D34"
   image: "resources/assets/pngs/splash_screen1.png"
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "resources/assets/pngs/splash_screen1.png"

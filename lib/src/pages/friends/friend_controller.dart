@@ -66,6 +66,11 @@ class FriendController extends GetxController {
     return user!.uid;
   }
 
+  String? getNameCurrentUser() {
+    final User? user = _firebaseAuth.currentUser;
+    return user?.displayName;
+  }
+
   void foundBarCode(BarcodeCapture capture) {
     if (!_screenOpened.value) {
       final List<Barcode> barcodes = capture.barcodes;
@@ -82,7 +87,6 @@ class FriendController extends GetxController {
       UserModel user = await generalService.getUserById(uid);
       AppLoadingOverlayWidget.dismiss();
       if (isFriend) {
-        Logs.e('true');
         AppDefaultDialogWidget()
             .setContent(
                 'Bạn và người dùng này đã là bạn bè từ trước, vui lòng quét mã QR người dùng khác')
