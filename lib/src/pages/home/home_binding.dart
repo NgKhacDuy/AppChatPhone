@@ -5,5 +5,6 @@ class HomeBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<HomeController>(() => HomeController());
     Get.lazyPut<FriendController>(() => FriendController());
+    Get.lazyPut<ChatController>(() => ChatController());
   }
 }

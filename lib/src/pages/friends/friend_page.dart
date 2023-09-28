@@ -87,7 +87,12 @@ class FriendPage extends GetView<FriendController> {
                           Text(controller.listFriend[index].name)
                         ]),
                         GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Get.toNamed(Routes.chatScreen, arguments: [
+                                controller.listFriend[index].uid,
+                                controller.listFriend[index].name
+                              ]);
+                            },
                             child: const FaIcon(FontAwesomeIcons.solidMessage))
                       ],
                     );

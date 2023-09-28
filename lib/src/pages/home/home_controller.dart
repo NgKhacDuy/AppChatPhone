@@ -1,4 +1,5 @@
 import 'package:app_chat/src/components/main/page/app_main_page_base_builder.dart';
+import 'package:app_chat/src/pages/chat/chat_controller.dart';
 import 'package:app_chat/src/pages/friends/friend_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
