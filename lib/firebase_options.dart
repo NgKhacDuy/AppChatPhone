@@ -67,6 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '739464888693',
     projectId: 'appchatphone',
     storageBucket: 'appchatphone.appspot.com',
+    androidClientId: '739464888693-eef06dhjc50ojh6nuvs6jnnl35kl3e4e.apps.googleusercontent.com',
+    iosClientId: '739464888693-oj8jtfkig6q7ddl5jr18f125c3bagtsu.apps.googleusercontent.com',
     iosBundleId: 'com.example.appChat',
   );
 
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '739464888693',
     projectId: 'appchatphone',
     storageBucket: 'appchatphone.appspot.com',
+    androidClientId: '739464888693-eef06dhjc50ojh6nuvs6jnnl35kl3e4e.apps.googleusercontent.com',
+    iosClientId: '739464888693-5ddujumrqjq7keg40faa66286m3bh630.apps.googleusercontent.com',
     iosBundleId: 'com.example.appChat.RunnerTests',
   );
 }
