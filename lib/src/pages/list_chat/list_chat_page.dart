@@ -60,54 +60,65 @@ class ListChatPage extends GetView<ListChatController> {
                   shrinkWrap: true,
                   itemCount: controller.listChat.length ?? 0,
                   itemBuilder: (BuildContext context, int index) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                            padding: EdgeInsets.all(
-                                AppThemeExt.of.majorPaddingScale(2)),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(color: Colors.black)),
-                            child: const FaIcon(FontAwesomeIcons.user,
-                                color: Colors.black)),
-                        SizedBox(width: AppThemeExt.of.majorPaddingScale(3)),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FutureBuilder<String>(
-                              future: controller.getUserName(
-                                  controller.listChat[index].receiverId,
-                                  controller.listChat[index].senderId),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<String> snapshot1) {
-                                if (snapshot1.hasData) {
-                                  return Text(snapshot1.data!,
-                                      style: TextStyle(color: Colors.black));
-                                } else {
-                                  return CircularProgressIndicator();
-                                }
-                              },
-                            ),
-                            Row(
-                              children: [
-                                Text(controller.renderLastMessage(
-                                    controller.listChat[index].lastMessage,
-                                    controller.listChat[index].receiverId)),
-                              ],
-                            )
-                          ],
-                        ),
-                        const Spacer(),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: AppThemeExt.of.majorPaddingScale(4)),
-                          child: Text(
-                            controller.convertTimestamp(controller
-                                .listChat[index].lastMessageTimestamp),
+                    return GestureDetector(
+                      onTap: () async {
+                        controller.goToChatPage(
+                            controller.checkSelfUid(
+                                controller.listChat[index].senderId,
+                                controller.listChat[index].receiverId),
+                            await controller.getUserName(
+                                controller.listChat[index].senderId,
+                                controller.listChat[index].receiverId));
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              padding: EdgeInsets.all(
+                                  AppThemeExt.of.majorPaddingScale(2)),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Colors.black)),
+                              child: const FaIcon(FontAwesomeIcons.user,
+                                  color: Colors.black)),
+                          SizedBox(width: AppThemeExt.of.majorPaddingScale(3)),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FutureBuilder<String>(
+                                future: controller.getUserName(
+                                    controller.listChat[index].receiverId,
+                                    controller.listChat[index].senderId),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String> snapshot1) {
+                                  if (snapshot1.hasData) {
+                                    return Text(snapshot1.data!,
+                                        style: TextStyle(color: Colors.black));
+                                  } else {
+                                    return CircularProgressIndicator();
+                                  }
+                                },
+                              ),
+                              Row(
+                                children: [
+                                  Text(controller.renderLastMessage(
+                                      controller.listChat[index].lastMessage,
+                                      controller.listChat[index].receiverId)),
+                                ],
+                              )
+                            ],
                           ),
-                        ),
-                      ],
+                          const Spacer(),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: AppThemeExt.of.majorPaddingScale(4)),
+                            child: Text(
+                              controller.convertTimestamp(controller
+                                  .listChat[index].lastMessageTimestamp),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                   separatorBuilder: (context, index) {

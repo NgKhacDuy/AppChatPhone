@@ -13,6 +13,7 @@ import 'package:get/get_instance/src/bindings_interface.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:utilities/utilities.dart';
 
+import '../../routes/app_page.dart';
 import '../../services/auth/auth_service.dart';
 import '../../services/message/message_service.dart';
 
@@ -30,6 +31,14 @@ class ListChatController extends GetxController {
   void onInit() async {
     super.onInit();
     fetchListChat();
+  }
+
+  void goToChatPage(String uid, String name) {
+    Get.toNamed(Routes.chatScreen, arguments: [uid, name]);
+  }
+
+  String checkSelfUid(String senderId, String receiverId) {
+    return _firebaseAuth.currentUser?.uid == senderId ? receiverId : senderId;
   }
 
   Future<void> logout() async {
