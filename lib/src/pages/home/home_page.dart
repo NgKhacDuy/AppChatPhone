@@ -11,12 +11,13 @@ class HomePage extends GetView<HomeController> {
   Widget body(BuildContext context) {
     return Obx(() => Scaffold(
           body: controller.listScreen[controller.indexWidget.value],
-          bottomNavigationBar: const GNav(
+          bottomNavigationBar: GNav(
+              onTabChange: (value) => controller.changeTab(value),
               backgroundColor: Colors.black,
               color: Colors.white,
               activeColor: Colors.white,
               gap: 4,
-              tabs: [
+              tabs: const [
                 GButton(
                   icon: Icons.home,
                   text: 'Home',

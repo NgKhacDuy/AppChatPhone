@@ -1,8 +1,10 @@
 import 'package:app_chat/src/pages/chat/chat_controller.dart';
 import 'package:app_chat/src/pages/friends/components/friend_scan_qr.dart';
 import 'package:app_chat/src/pages/home/home_controller.dart';
+import 'package:app_chat/src/pages/list_chat/list_chat_controller.dart';
 import 'package:app_chat/src/pages/login/login_controller.dart';
 import 'package:app_chat/src/pages/register/register_controller.dart';
+import 'package:app_chat/src/pages/setting/setting_controller.dart';
 import 'package:app_chat/src/services/auth/auth_service.dart';
 import 'package:app_chat/src/services/message/message_service.dart';
 import 'package:get/get.dart';
@@ -33,6 +35,14 @@ class AppPages {
     GetPage(
         name: Routes.chatScreen,
         page: () => const ChatPage(),
-        binding: ChatBinding())
+        binding: ChatBinding()),
+    GetPage(
+        name: Routes.listChat,
+        page: () => const ListChatPage(),
+        binding: ListChatBinding()),
+    GetPage(
+        name: Routes.setting,
+        page: () => const SettingPage(),
+        binding: SettingBinding())
   ];
 }

@@ -8,4 +8,6 @@ class Routes {
   static const register = '/register';
   static const friendScanQr = '/friendScanQr';
   static const chatScreen = '/chatScreen';
+  static const listChat = '/listChat';
+  static const setting = '/setting';
 }
