@@ -1,5 +1,6 @@
 import 'package:app_chat/src/components/main/dialog/app_dialog_base_builder.dart';
 import 'package:app_chat/src/components/main/overlay/app_loading_overlay_widget.dart';
+import 'package:app_chat/src/components/main/snackBar/app_snack_bar_base_builder.dart';
 import 'package:app_chat/src/config/app_theme.dart';
 import 'package:app_chat/src/model/user_model.dart';
 import 'package:app_chat/src/pages/friends/components/friend_scan_qr.dart';
@@ -29,15 +30,25 @@ class FriendController extends GetxController {
 
   @override
   void onInit() async {
-    await getListFriend();
-    await getListRequest();
+    initFetch();
     super.onInit();
   }
 
-  Future<void> acceptFriendRequest(String senderId) async {
-    final User? user = _firebaseAuth.currentUser;
-    await generalService.acceptFriendRequest(senderId, user!.uid);
+  Future<void> initFetch() async {
+    await getListFriend();
     await getListRequest();
+  }
+
+  Future<void> acceptFriendRequest(String senderId) async {
+    try {
+      final User? user = _firebaseAuth.currentUser;
+      await generalService.acceptFriendRequest(senderId, user!.uid);
+      await getListRequest();
+      AppSnackBarWidget()
+          .setContent(Text('Bạn đã chấp nhận lời mời kết bạn'))
+          .showSnackBar(Get.context!);
+      initFetch();
+    } catch (e) {}
   }
 
   Future<void> rejectFriendRequest(String senderId) async {
@@ -102,13 +113,16 @@ class FriendController extends GetxController {
             .setAppDialogType(AppDialogType.confirm)
             .setPositiveText('Đồng ý')
             .setNegativeText('Không')
-            .setOnPositive(() {})
+            .setOnPositive(() async {
+              await addRequest(uid);
+            })
             .setOnNegative(() {})
             .setIsHaveCloseIcon(true)
             .buildDialog(Get.context!)
             .show();
       }
     } catch (e) {
+      Logs.e(e);
       AppLoadingOverlayWidget.dismiss();
       AppDefaultDialogWidget()
           .setContent('Đã có lỗi xảy ra, vui lòng thử lại hoặc quét mã QR khác')
@@ -117,6 +131,25 @@ class FriendController extends GetxController {
           .setIsHaveCloseIcon(true)
           .buildDialog(Get.context!)
           .show();
+    }
+  }
+
+  Future<void> addRequest(String uid) async {
+    try {
+      await generalService.addFriendRequest(
+          _firebaseAuth.currentUser!.uid, uid);
+      AppSnackBarWidget()
+          .setContent(Text('Đã gửi lời mời kết bạn'))
+          .setAppSnackBarStatus(AppSnackBarStatus.success)
+          .setAppSnackBarType(AppSnackBarType.toastMessage)
+          .showSnackBar(Get.context!);
+    } catch (e) {
+      Logs.e(e);
+      AppSnackBarWidget()
+          .setContent(Text('Đã có lỗi xảy ra, vui lòng thử lại'))
+          .setAppSnackBarStatus(AppSnackBarStatus.error)
+          .setAppSnackBarType(AppSnackBarType.toastMessage)
+          .showSnackBar(Get.context!);
     }
   }
 }

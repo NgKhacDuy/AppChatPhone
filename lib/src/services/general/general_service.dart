@@ -153,23 +153,32 @@ class GeneralService extends GetxController {
   }
 
   Future<List<UserModel>> getListFriends(String uid) async {
-    final snapShot = await _firestore.collection('users').doc(uid).get();
-    final friends = snapShot['friends'];
+    try {
+      var snapShot = await _firestore.collection('users').doc(uid).get();
+      if (!snapShot.data()!.containsKey('friends')) {
+        await _firestore
+            .collection('users')
+            .doc(_firebaseAuth.currentUser?.uid)
+            .update({'friends': []});
+        snapShot = await _firestore.collection('users').doc(uid).get();
+      }
+      final friends = snapShot['friends'];
 
-    // Convert the `friends` field to a list of futures.
-    final friendFutures =
-        (friends as List).map<Future<UserModel>>((friendId) async {
-      final friendSnapShot =
-          await _firestore.collection('users').doc(friendId).get();
-      return UserModel(
-        uid: friendId,
-        name: friendSnapShot['name'],
-        email: friendSnapShot['email'],
-      );
-    }).toList(); // Convert the mapped iterable to a list.
+      final friendFutures =
+          (friends as List).map<Future<UserModel>>((friendId) async {
+        final friendSnapShot =
+            await _firestore.collection('users').doc(friendId).get();
+        return UserModel(
+          uid: friendId,
+          name: friendSnapShot['name'],
+          email: friendSnapShot['email'],
+        );
+      }).toList();
 
-    // Wait for all of the futures to complete.
-    return await Future.wait(friendFutures);
+      return await Future.wait(friendFutures);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<UserModel> getUserById(String uid) async {
@@ -181,11 +190,33 @@ class GeneralService extends GetxController {
     }
   }
 
+  Future<void> createRequest(String senderId, String receiverId) async {
+    try {
+      await _firestore.collection('friendRequests').add({
+        'senderId': senderId,
+        'receiverId': receiverId,
+      });
+    } catch (e) {
+      Logs.e(e);
+      rethrow;
+    }
+  }
+
   Future<bool> checkUserInListFriend(String userId) async {
-    final snapShot = await _firestore
+    var snapShot = await _firestore
         .collection('users')
         .doc(_firebaseAuth.currentUser?.uid)
         .get();
+    if (!snapShot.data()!.containsKey('friends')) {
+      _firestore
+          .collection('users')
+          .doc(_firebaseAuth.currentUser?.uid)
+          .set({'friends': []});
+      snapShot = await _firestore
+          .collection('users')
+          .doc(_firebaseAuth.currentUser?.uid)
+          .get();
+    }
     List<dynamic> friends = snapShot.get('friends');
 
     if (friends.isEmpty) {

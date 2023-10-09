@@ -4,9 +4,17 @@ class AppBarWidget extends AppBarBaseBuilder {
   @override
   PreferredSizeWidget build(BuildContext context) {
     return AppBar(
-      title: AppTextHeading3Widget().setText(_headerPage).setColor(_headerPageColor).build(context),
+      title: AppTextHeading3Widget()
+          .setText(_headerPage)
+          .setColor(_headerPageColor)
+          .build(context),
       centerTitle: _centerTitle,
       actions: _actions,
+      leading: _leading ??
+          AppButtonAppBarWidget()
+              .setPrefixIcon(R.svgs.icArrowLineLeft.svg())
+              .setOnPressed(() => Get.back())
+              .build(context),
       backgroundColor: _backgroundColor ?? AppColors.of.grayColor[1],
       flexibleSpace: _flexibleSpace,
       bottom: _bottom,
@@ -52,6 +60,12 @@ class AppBarWidget extends AppBarBaseBuilder {
   @override
   AppBarBaseBuilder setHeaderPageColor(Color? headerPageColor) {
     _headerPageColor = headerPageColor;
+    return this;
+  }
+
+  @override
+  AppBarBaseBuilder setLeading(Widget? leading) {
+    _leading = leading;
     return this;
   }
 }
