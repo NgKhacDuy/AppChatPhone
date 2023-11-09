@@ -16,9 +16,15 @@ class AuthService extends GetxController {
     try {
       userCredential.value = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      _firestore.collection('users').doc(userCredential.value?.user!.uid).set(
-          {'uid': userCredential.value?.user!.uid, 'email': email},
+      var snapShot =
+          _firestore.collection('users').doc(userCredential.value?.user!.uid);
+      snapShot.set({'uid': userCredential.value?.user!.uid, 'email': email},
           SetOptions(merge: true));
+      snapShot.snapshots().listen((event) {
+        if (!event.data()!.containsKey('img')) {
+          snapShot.set({'img': ''}, SetOptions(merge: true));
+        }
+      });
       return userCredential.value;
     } on FirebaseAuthException {
       rethrow;
@@ -55,10 +61,16 @@ class AuthService extends GetxController {
     UserCredential userCredential =
         await _firebaseAuth.signInWithCredential(credential);
 
-    _firestore.collection('users').doc(userCredential.user!.uid).set({
+    var snapShot = _firestore.collection('users').doc(userCredential.user!.uid);
+    snapShot.set({
       'uid': userCredential.user!.uid,
       'email': userCredential.user!.email,
       'name': userCredential.user!.displayName
+    });
+    snapShot.snapshots().listen((event) {
+      if (!event.data()!.containsKey('img')) {
+        snapShot.set({'img': ''});
+      }
     });
     return userCredential;
   }

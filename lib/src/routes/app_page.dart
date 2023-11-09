@@ -1,4 +1,5 @@
 import 'package:app_chat/src/pages/chat/chat_controller.dart';
+import 'package:app_chat/src/pages/editAvatar/edit_avatar_controller.dart';
 import 'package:app_chat/src/pages/friends/components/friend_scan_qr.dart';
 import 'package:app_chat/src/pages/home/home_controller.dart';
 import 'package:app_chat/src/pages/list_chat/list_chat_controller.dart';
@@ -43,6 +44,10 @@ class AppPages {
     GetPage(
         name: Routes.setting,
         page: () => const SettingPage(),
-        binding: SettingBinding())
+        binding: SettingBinding()),
+    GetPage(
+        name: Routes.editAvatar,
+        page: () => const EditAvatarPage(),
+        binding: EditAvatarBinding())
   ];
 }

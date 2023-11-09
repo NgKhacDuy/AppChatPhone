@@ -27,12 +27,6 @@ class ListChatController extends GetxController {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   RxList<ListChatModel> listChat = RxList([]);
 
-  @override
-  void onInit() async {
-    super.onInit();
-    fetchListChat();
-  }
-
   void goToChatPage(String uid, String name) {
     Get.toNamed(Routes.chatScreen, arguments: [uid, name]);
   }
@@ -45,8 +39,8 @@ class ListChatController extends GetxController {
     await authService.signOutAll();
   }
 
-  Future<void> fetchListChat() async {
-    listChat.value = await messageService.getListChat();
+  Stream<List<ListChatModel>> getListChat() {
+    return messageService.getListChat1();
   }
 
   String convertTimestamp(Timestamp timestamp) {

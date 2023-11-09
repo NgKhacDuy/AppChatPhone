@@ -37,38 +37,48 @@ class ListChatPage extends GetView<ListChatController> {
               ],
             ),
           ),
-          test(context)
+          listItemChat(context)
           // listChat(context)
         ],
       ),
     );
   }
 
-  Widget test(BuildContext context) {
+  Widget listItemChat(BuildContext context) {
     return Expanded(
       child: Container(
-          padding: EdgeInsets.only(left: AppThemeExt.of.majorPaddingScale(3)),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(AppThemeExt.of.majorScale(6)),
-                  topLeft: Radius.circular(AppThemeExt.of.majorScale(6)))),
-          child: Obx(
-            () => SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: ListView.separated(
+        padding: EdgeInsets.only(left: AppThemeExt.of.majorPaddingScale(3)),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(AppThemeExt.of.majorScale(6)),
+                topLeft: Radius.circular(AppThemeExt.of.majorScale(6)))),
+        child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: StreamBuilder(
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                }
+                return ListView.separated(
                   shrinkWrap: true,
-                  itemCount: controller.listChat.length ?? 0,
+                  itemCount: snapshot.data?.length ?? 0,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () async {
                         controller.goToChatPage(
                             controller.checkSelfUid(
-                                controller.listChat[index].senderId,
-                                controller.listChat[index].receiverId),
+                                snapshot.data![index].senderId,
+                                snapshot.data![index].receiverId),
                             await controller.getUserName(
-                                controller.listChat[index].senderId,
-                                controller.listChat[index].receiverId));
+                                snapshot.data![index].senderId,
+                                snapshot.data![index].receiverId));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,8 +97,8 @@ class ListChatPage extends GetView<ListChatController> {
                             children: [
                               FutureBuilder<String>(
                                 future: controller.getUserName(
-                                    controller.listChat[index].receiverId,
-                                    controller.listChat[index].senderId),
+                                    snapshot.data![index].receiverId,
+                                    snapshot.data![index].senderId),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<String> snapshot1) {
                                   if (snapshot1.hasData) {
@@ -102,8 +112,8 @@ class ListChatPage extends GetView<ListChatController> {
                               Row(
                                 children: [
                                   Text(controller.renderLastMessage(
-                                      controller.listChat[index].lastMessage,
-                                      controller.listChat[index].receiverId)),
+                                      snapshot.data![index].lastMessage,
+                                      snapshot.data![index].receiverId)),
                                 ],
                               )
                             ],
@@ -113,8 +123,8 @@ class ListChatPage extends GetView<ListChatController> {
                             padding: EdgeInsets.only(
                                 right: AppThemeExt.of.majorPaddingScale(4)),
                             child: Text(
-                              controller.convertTimestamp(controller
-                                  .listChat[index].lastMessageTimestamp),
+                              controller.convertTimestamp(
+                                  snapshot.data![index].lastMessageTimestamp),
                             ),
                           ),
                         ],
@@ -124,8 +134,11 @@ class ListChatPage extends GetView<ListChatController> {
                   separatorBuilder: (context, index) {
                     return SizedBox(height: AppThemeExt.of.majorMarginScale(3));
                   },
-                )),
-          )),
+                );
+              },
+              stream: controller.getListChat(),
+            )),
+      ),
     );
   }
 }

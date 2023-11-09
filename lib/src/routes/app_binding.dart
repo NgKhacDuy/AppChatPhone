@@ -7,5 +7,7 @@ class AppBinding extends Bindings {
     Get.put<AuthService>(AuthService(), permanent: true);
     Get.put<GeneralService>(GeneralService(), permanent: true);
     Get.put<MessageService>(MessageService(), permanent: true);
+    Get.put<SettingController>(SettingController(), permanent: true);
+    Get.put<ListChatController>(ListChatController(), permanent: true);
   }
 }
