@@ -65,11 +65,17 @@ class FriendController extends GetxController {
   }
 
   Future<void> getListFriend() async {
-    AppLoadingOverlayWidget.show();
-    final User? user = _firebaseAuth.currentUser;
-    List<UserModel> listResult = await generalService.getListFriends(user!.uid);
-    listFriend.assignAll(listResult);
-    AppLoadingOverlayWidget.dismiss();
+    try {
+      AppLoadingOverlayWidget.show();
+      final User? user = _firebaseAuth.currentUser;
+      List<UserModel> listResult =
+          await generalService.getListFriends(user!.uid);
+      listFriend.assignAll(listResult);
+      AppLoadingOverlayWidget.dismiss();
+    } catch (e) {
+      AppLoadingOverlayWidget.dismiss();
+      Logs.e(e);
+    }
   }
 
   String getUIDCurrentUser() {

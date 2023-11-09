@@ -48,6 +48,54 @@ class MessageService extends GetxService {
         .snapshots();
   }
 
+  Stream<List<ListChatModel>> getListChat1() async* {
+    try {
+      List<ListChatModel> listChat = [];
+      String currentUserId = _firebaseAuth.currentUser!.uid;
+      final users = await _firestore.collection('users').get();
+
+      for (var element in users.docs) {
+        String id = element.data()['uid'];
+
+        // Generate both possible groupChatIds
+        String groupChatId1 = '${id}_$currentUserId';
+        String groupChatId2 = '${currentUserId}_$id';
+
+        // Check if chat room exists for each combination
+        final docSnap1 = await _firestore
+            .collection('chatRoom')
+            .doc(groupChatId1)
+            .collection('message')
+            .orderBy('timestamp', descending: true)
+            .limit(1)
+            .get();
+        final docSnap2 = await _firestore
+            .collection('chatRoom')
+            .doc(groupChatId2)
+            .collection('message')
+            .orderBy('timestamp', descending: true)
+            .limit(1)
+            .get();
+
+        if (docSnap1.docs.isNotEmpty) {
+          final data =
+              docSnap1.docs.map((e) => ListChatModel.fromJson(e.data()));
+          listChat.addAll(data);
+        } else if (docSnap2.docs.isNotEmpty) {
+          final data =
+              docSnap2.docs.map((e) => ListChatModel.fromJson(e.data()));
+          listChat.addAll(data);
+        }
+      }
+      listChat.sort(
+          (a, b) => a.lastMessageTimestamp.compareTo(b.lastMessageTimestamp));
+      yield listChat;
+    } catch (e) {
+      Logs.e(e);
+      rethrow;
+    }
+  }
+
   Future<List<ListChatModel>> getListChat() async {
     try {
       List<ListChatModel> listChat = [];

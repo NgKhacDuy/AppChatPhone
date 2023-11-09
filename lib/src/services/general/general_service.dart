@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:algolia/algolia.dart';
 import 'package:app_chat/src/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -172,6 +174,7 @@ class GeneralService extends GetxController {
           uid: friendId,
           name: friendSnapShot['name'],
           email: friendSnapShot['email'],
+          imgPath: friendSnapShot['img'] ?? '',
         );
       }).toList();
 
@@ -223,5 +226,17 @@ class GeneralService extends GetxController {
       return false;
     }
     return friends.contains(userId);
+  }
+
+  Future<void> addImgUser(String imgName) async {
+    StreamSubscription<DocumentSnapshot> subscription;
+    var snapShot =
+        _firestore.collection('users').doc(_firebaseAuth.currentUser?.uid);
+    subscription = snapShot.snapshots().listen((event) async {
+      await _firestore
+          .collection('users')
+          .doc(_firebaseAuth.currentUser?.uid)
+          .set({'img': imgName}, SetOptions(merge: true)).then((value) {});
+    });
   }
 }
